@@ -68,3 +68,24 @@ for i, (count, cause) in enumerate(zip(counts, causes)):
 plt.gca().invert_yaxis()  # Inverte a ordem do eixo y para mostrar do maior para o menor
 plt.show()
 
+# 5) Existe um mês do ano com maior incidência de incêndios globalmente?
+
+monthly_fires = dataset.groupby('Month')['Fires_Count'].sum().reset_index()
+most_frequent_month = monthly_fires.loc[monthly_fires['Fires_Count'].idxmax()]
+print(f'Mês com maior incidência de incêndios: {most_frequent_month["Month"]}')
+
+# 6) O vento (velocidade média) tem correlação com a extensão das áreas queimadas?
+
+wind_speed = dataset.groupby('Year').agg({
+    'Wind_Speed_kmh': 'mean',
+    'Burned_Area_Ha': 'sum'
+}).reset_index()
+
+correlation_wind = wind_speed['Wind_Speed_kmh'].corr(wind_speed['Burned_Area_Ha'])
+print(f'Correlação entre velocidade do vento e extensão das Áreas Queimadas: {correlation_wind:.2f}')
+
+plt.scatter(wind_speed['Wind_Speed_kmh'], wind_speed['Burned_Area_Ha'])
+plt.xlabel('Velocidade do Vento (km/h)')
+plt.ylabel('Extensão das Áreas Queimadas (Ha)')
+plt.title('Relação entre Velocidade do Vento e Extensão das Áreas Queimadas')
+plt.show()
