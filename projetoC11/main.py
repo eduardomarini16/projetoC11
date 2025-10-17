@@ -89,3 +89,11 @@ plt.xlabel('Velocidade do Vento (km/h)')
 plt.ylabel('Extensão das Áreas Queimadas (Ha)')
 plt.title('Relação entre Velocidade do Vento e Extensão das Áreas Queimadas')
 plt.show()
+
+# 7) Quais regiões específicas dentro de cada país concentram o maior número de incêndios?
+region_fire_counts = dataset.groupby(['Country', 'Region'])['Fires_Count'].sum().reset_index()
+most_frequent_region = region_fire_counts.loc[region_fire_counts.groupby('Country')['Fires_Count'].idxmax()]
+most_frequent_region = most_frequent_region.reset_index(drop=True)
+print(most_frequent_region)
+
+    
